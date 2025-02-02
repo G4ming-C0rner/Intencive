@@ -59,120 +59,146 @@
     https://docs.oracle.com/javase/8/docs/api/java/lang/String.html
 16. Расскажите про варианты использования зарезервированных слов таких
     как super, this, class, instace of
-    В JavaScript и других объектно-ориентированных языках программирования зарезервированные слова, такие как `super`, `this`, `class` и `instanceof`, играют важную роль в работе с классами, объектами и наследованием. Рассмотрим их использование:
+
+    В Java зарезервированные слова, такие как `super`, `this`, `class` и `instanceof`, также играют ключевую роль в работе с классами, объектами и наследованием. Давайте разберем их использование в контексте Java.
 
 ---
 
 ### 1. **`super`**
-- **Назначение:** Ключевое слово `super` используется для доступа к методам и свойствам родительского класса (суперкласса) из дочернего класса.
+- **Назначение:** Ключевое слово `super` используется для доступа к членам (полям, методам и конструкторам) родительского класса (суперкласса) из дочернего класса.
 - **Примеры использования:**
     - Вызов конструктора родительского класса:
-      ```javascript
+      ```java
       class Animal {
-        constructor(name) {
-          this.name = name;
-        }
+          String name;
+
+          Animal(String name) {
+              this.name = name;
+          }
       }
 
       class Dog extends Animal {
-        constructor(name, breed) {
-          super(name); // Вызов конструктора родительского класса
-          this.breed = breed;
-        }
+          String breed;
+
+          Dog(String name, String breed) {
+              super(name); // Вызов конструктора родительского класса
+              this.breed = breed;
+          }
       }
       ```
-    - Вызов методов родительского класса:
-      ```javascript
+    - Доступ к методам родительского класса:
+      ```java
       class Animal {
-        speak() {
-          console.log("Animal sound");
-        }
+          void speak() {
+              System.out.println("Animal sound");
+          }
       }
 
       class Dog extends Animal {
-        speak() {
-          super.speak(); // Вызов метода родительского класса
-          console.log("Woof!");
-        }
+          @Override
+          void speak() {
+              super.speak(); // Вызов метода родительского класса
+              System.out.println("Woof!");
+          }
       }
       ```
 
 ---
 
 ### 2. **`this`**
-- **Назначение:** Ключевое слово `this` ссылается на текущий объект, в контексте которого выполняется код. Оно используется для доступа к свойствам и методам объекта.
+- **Назначение:** Ключевое слово `this` ссылается на текущий объект. Оно используется для доступа к полям и методам объекта, а также для вызова одного конструктора из другого (в пределах того же класса).
 - **Примеры использования:**
-    - В методах объекта:
-      ```javascript
-      const person = {
-        name: "Alice",
-        greet() {
-          console.log(`Hello, my name is ${this.name}`);
-        }
-      };
-      person.greet(); // Выведет: Hello, my name is Alice
-      ```
-    - В конструкторах классов:
-      ```javascript
+    - Устранение неоднозначности между полями класса и параметрами метода:
+      ```java
       class Person {
-        constructor(name) {
-          this.name = name; // this ссылается на создаваемый экземпляр
-        }
+          String name;
+
+          Person(String name) {
+              this.name = name; // this.name ссылается на поле класса, а name — на параметр
+          }
+      }
+      ```
+    - Вызов одного конструктора из другого:
+      ```java
+      class Person {
+          String name;
+          int age;
+
+          Person(String name) {
+              this(name, 0); // Вызов другого конструктора
+          }
+
+          Person(String name, int age) {
+              this.name = name;
+              this.age = age;
+          }
       }
       ```
 
 ---
 
 ### 3. **`class`**
-- **Назначение:** Ключевое слово `class` используется для объявления классов в JavaScript. Классы являются синтаксическим сахаром для работы с прототипами и наследованием.
+- **Назначение:** Ключевое слово `class` используется для объявления класса в Java. Класс является основным строительным блоком объектно-ориентированного программирования в Java.
 - **Пример использования:**
-  ```javascript
+  ```java
   class Animal {
-    constructor(name) {
-      this.name = name;
-    }
+      String name;
 
-    speak() {
-      console.log(`${this.name} makes a sound`);
-    }
+      Animal(String name) {
+          this.name = name;
+      }
+
+      void speak() {
+          System.out.println(name + " makes a sound");
+      }
   }
 
-  const dog = new Animal("Rex");
-  dog.speak(); // Выведет: Rex makes a sound
+  public class Main {
+      public static void main(String[] args) {
+          Animal dog = new Animal("Rex");
+          dog.speak(); // Выведет: Rex makes a sound
+      }
+  }
   ```
 
 ---
 
 ### 4. **`instanceof`**
-- **Назначение:** Оператор `instanceof` проверяет, является ли объект экземпляром определенного класса или конструктора.
+- **Назначение:** Оператор `instanceof` проверяет, является ли объект экземпляром определенного класса или его подкласса. Также он может проверять, реализует ли объект определенный интерфейс.
 - **Пример использования:**
-  ```javascript
+  ```java
   class Animal {}
   class Dog extends Animal {}
 
-  const dog = new Dog();
-  console.log(dog instanceof Dog); // true
-  console.log(dog instanceof Animal); // true (из-за наследования)
-  console.log(dog instanceof Object); // true (все объекты наследуются от Object)
+  public class Main {
+      public static void main(String[] args) {
+          Dog dog = new Dog();
+          System.out.println(dog instanceof Dog); // true
+          System.out.println(dog instanceof Animal); // true (Dog наследуется от Animal)
+          System.out.println(dog instanceof Object); // true (все классы наследуются от Object)
+      }
+  }
   ```
 
 ---
 
 ### Источники:
-1. Официальная документация MDN Web Docs:
-    - [super](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/super)
-    - [this](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/this)
-    - [class](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Classes)
-    - [instanceof](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/instanceof)
-2. Книга "You Don't Know JS" (серия книг по JavaScript).
+1. Официальная документация Oracle:
+    - [Java Keywords](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/_keywords.html)
+    - [super](https://docs.oracle.com/javase/tutorial/java/IandI/super.html)
+    - [this](https://docs.oracle.com/javase/tutorial/java/javaOO/thiskey.html)
+    - [instanceof](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/op2.html)
+2. Книга "Java: The Complete Reference" by Herbert Schildt.
 
-18. java массивы, к какому типу относится, какие есть особенности можно
+
+
+17. java массивы, к какому типу относится, какие есть особенности можно
     ли создать 0 длинны, могут ли расширяться.
-19. Назовите этапы создания \\запуска блоков\\конструкторов класса при
+18. Назовите этапы создания \\запуска блоков\\конструкторов класса при
     наследовании.
-20. Расскажите какое будет поведение если внутри цикла вызвать оператор
+19. Расскажите какое будет поведение если внутри цикла вызвать оператор
     break\\continue.
-21. Что такое Generic
-22. Расскажите про такое зарезервированное слово как final, к чему
+20. Что такое Generic
+21. Расскажите про такое зарезервированное слово как final, к чему
     применяется как используется.
-23. Рассказать про Optional
+22. Рассказать про Optional
